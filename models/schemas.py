@@ -1,0 +1,14 @@
+from pydantic import BaseModel
+from typing import List, Optional
+from datetime import datetime
+
+class ProductModel(BaseModel):
+    name: str
+    description: Optional[str] = ""
+    price: float
+    sizes: List[str]
+
+class OrderModel(BaseModel):
+    user_id: str
+    product_ids: List[str]
+    order_date: Optional[datetime] = None
