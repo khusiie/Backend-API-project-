@@ -1,14 +1,12 @@
 from fastapi import APIRouter
 from models.schemas import OrderModel
 from services.database import order_collection
-from datetime import datetime
 
 router = APIRouter()
 
 @router.post("/orders", status_code=201)
 async def create_order(order: OrderModel):
     order_dict = order.dict()
-    order_dict["order_date"] = datetime.utcnow()
     result = await order_collection.insert_one(order_dict)
     order_dict["_id"] = str(result.inserted_id)
     return order_dict

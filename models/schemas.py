@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import List, Optional
+from typing import List
 from datetime import datetime
 
 class SizeModel(BaseModel):
@@ -11,7 +11,11 @@ class ProductModel(BaseModel):
     price: float
     sizes: List[SizeModel]
 
+class OrderItemModel(BaseModel):
+    productId: str
+    qty: int
+
 class OrderModel(BaseModel):
-    user_id: str
-    product_ids: List[str]
-    order_date: Optional[datetime] = None
+    userId: str
+    items: List[OrderItemModel]
+    
