@@ -2,10 +2,14 @@ from pydantic import BaseModel
 from typing import List, Optional
 from datetime import datetime
 
+class SizeModel(BaseModel):
+    size: str
+    quantity: int
+
 class ProductModel(BaseModel):
     name: str
     price: float
-    sizes: List[str]
+    sizes: List[SizeModel]
 
 class OrderModel(BaseModel):
     user_id: str
