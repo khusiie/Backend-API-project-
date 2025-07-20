@@ -20,11 +20,10 @@ async def list_products(
 ):
     query = {}
 
-    # Search by product name
+   
     if name:
         query["name"] = {"$regex": name, "$options": "i"}
 
-    # Filter by size inside the list of size objects
     if size:
         query["sizes"] = {
             "$elemMatch": {
@@ -32,10 +31,9 @@ async def list_products(
             }
         }
 
-    # Count total matching products for pagination
     total = await product_collection.count_documents(query)
 
-    # Query matching products and include sizes
+
     cursor = product_collection.find(query).skip(offset).limit(limit)
 
     products = []
@@ -44,7 +42,7 @@ async def list_products(
             "id": str(doc["_id"]),
             "name": doc["name"],
             "price": doc["price"],
-            "sizes": doc["sizes"]  # List of size-quantity objects
+            "sizes": doc["sizes"]  
         })
 
     return {
