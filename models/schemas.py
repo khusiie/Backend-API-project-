@@ -4,7 +4,6 @@ from datetime import datetime
 
 class ProductModel(BaseModel):
     name: str
-    description: Optional[str] = ""
     price: float
     sizes: List[str]
 

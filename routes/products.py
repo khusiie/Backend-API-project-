@@ -23,9 +23,26 @@ async def list_products(
         query["name"] = {"$regex": name, "$options": "i"}
     if size:
         query["sizes"] = size
-    cursor = product_collection.find(query).skip(offset).limit(limit)
+
+    # Count total matching products
+    total = await product_collection.count_documents(query)
+
+    cursor = product_collection.find(query, {"sizes": 0}) \
+                               .skip(offset).limit(limit)
+
     products = []
     async for doc in cursor:
-        doc["_id"] = str(doc["_id"])
-        products.append(doc)
-    return products
+        products.append({
+            "id": str(doc["_id"]),
+            "name": doc["name"],
+            "price": doc["price"]
+        })
+
+    return {
+        "data": products,
+        "page": {
+            "next": offset + limit if offset + limit < total else None,
+            "limit": len(products),
+            "previous": max(offset - limit, 0)
+        }
+    }
